@@ -2,46 +2,39 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 import "./Nasa.css";
+import RoverData from "../interfaces/Roverdata";
 
-const Nasa = () => {
-  const [nasaData, setNasaData] = useState<
-    { earth_date: string; id: number; img_src: string }[]
-  >([]);
-  const [query, setQuery] = useState("");
+const Nasa: React.FC = () => {
+  const [data, setData] = useState<RoverData[]>([]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      const { data } = await axios.get("http://localhost:4000/nasa");
-      console.log("response.data", data);
-      setNasaData(data);
+    const getDataFromServer = async () => {
+      try {
+        const { data } = await axios.get<RoverData[]>(
+          "http://localhost:4000/nasa"
+        );
+        console.log("data", data);
+        const transformedData = data.map(item => ({
+          id: item.id,
+          img_src: item.img_src,
+          camera: { name: item.camera.name }
+        }));
+        setData(transformedData);
+      } catch (error) {
+        console.error("Error fetching data from server:", error);
+      }
     };
-    fetchData();
+    getDataFromServer();
   }, []);
-
-  const searchPhotosByDate = async () => {
-    const response = await axios.post("http://localhost:4000/nasa", { query });
-    console.log("query", query);
-  };
 
   return (
     <div>
       <div>
-        <input
-          type="text"
-          placeholder="search images by date"
-          value={query}
-          onChange={(e) => {
-            setQuery(e.target.value);
-          }}
-        ></input>
-        <button onClick={searchPhotosByDate}>Searh</button>
-      </div>
-      <div>
-        {nasaData.map(({ id, earth_date, img_src }) => (
-          <div key={id}>
-            <li>{earth_date}</li>
+        {data.map(({ id, camera, img_src }) => (
+          <ul key={id} className="container">
+            <h4>Camera name: {camera.name}</h4>
             <img className="box" src={img_src} />
-          </div>
+          </ul>
         ))}
       </div>
     </div>
