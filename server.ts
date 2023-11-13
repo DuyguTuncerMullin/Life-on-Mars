@@ -19,21 +19,18 @@ const apiConfig = {
 
 app.get("/nasa", async (req, res) => {
   try {
+    const { page = 1 } = req.query;
+    const perPage = 5; 
     const { data } = await axios.get(
-      `${apiConfig.base}photos?sol=1000&api_key=${apiConfig.key}`
+      `${apiConfig.base}photos?sol=1000&api_key=${apiConfig.key}&page=${page}&per_page=${perPage}`
     );
     res.send(data.photos);
   } catch (error) {
-    console.error(`error fetching data ${error}`);
-    res.send(500).json({ error: `earror fething data ${error}` });
+    console.error(`Error fetching data: ${error}`);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 });
 
-app.post("/nasa", async (req, res) => {
-  const dataFromClient = req.body;
-  console.log("dataFromClient", dataFromClient);
-});
-
 app.listen(port, () => {
-  console.log(`listening server on port ${port}`);
+  console.log(`Server listening on port ${port}`);
 });
