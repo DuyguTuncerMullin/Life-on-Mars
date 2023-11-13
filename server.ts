@@ -18,11 +18,15 @@ const apiConfig = {
 };
 
 app.get("/nasa", async (req, res) => {
-  const { data } = await axios.get(
-    `${apiConfig.base}photos?sol=1000&api_key=${apiConfig.key}`
-  );
-//   console.log("data.photos", data.photos);
-  res.send(data.photos);
+  try {
+    const { data } = await axios.get(
+      `${apiConfig.base}photos?sol=1000&api_key=${apiConfig.key}`
+    );
+    res.send(data.photos);
+  } catch (error) {
+    console.error(`error fetching data ${error}`);
+    res.send(500).json({ error: `earror fething data ${error}` });
+  }
 });
 
 app.post("/nasa", async (req, res) => {
