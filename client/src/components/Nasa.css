@@ -1,11 +1,13 @@
-/* .main-container {
+.main-container {
   background-color: rgb(239, 207, 121);
   height: 80%;
   width: 50%;
-} */
+}
 
 .container {
   display: inline-block;
+  padding: 10px
+
 }
 
 .button {
@@ -15,4 +17,8 @@
 .box {
   width: 100px;
   height: 100px;
+}
+
+.outer-container {
+  display: flex;
 }

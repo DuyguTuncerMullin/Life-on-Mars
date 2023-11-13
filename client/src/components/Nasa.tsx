@@ -21,6 +21,7 @@ const Nasa: React.FC = () => {
         id: item.id,
         img_src: item.img_src,
         camera: { name: item.camera.name },
+        rover: { cameras: item.rover.cameras },
       }));
 
       setData((prevData) => [...prevData, ...transformedData]);
@@ -44,10 +45,18 @@ const Nasa: React.FC = () => {
     <div>
       <div className="main-container">
         <div>
-          {data.map(({ id, camera, img_src }) => (
+          {data.map(({ id, camera, img_src, rover }) => (
             <ul key={id} className="container">
               <h4>Camera name: {camera.name}</h4>
               <img className="box" src={img_src} alt={`Mars Rover - ${id}`} />
+              <div>
+                <h5>Cameras:</h5>
+                <ul>
+                  {rover.cameras.map((camera) => (
+                    <li key={camera.name}>{camera.full_name}</li>
+                  ))}
+                </ul>
+              </div>
             </ul>
           ))}
         </div>
