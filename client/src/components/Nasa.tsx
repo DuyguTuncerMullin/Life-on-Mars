@@ -11,6 +11,8 @@ const Nasa: React.FC = () => {
   const [filter, setFilter] = useState("");
   const [filteredItems, setFilteredItems] = useState<RoverData[]>([]);
 
+
+
   const getDataFromServer = async (page: number) => {
     try {
       setLoading(true);
